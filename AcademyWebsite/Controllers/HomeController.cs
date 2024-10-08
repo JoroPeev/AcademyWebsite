@@ -18,6 +18,22 @@ namespace AcademyWebsite.Controllers
             return View();
         }
 
+        public IActionResult ThankYou()
+        {
+            return View();
+        }
+
+        public IActionResult RegistrationData()
+        {
+            return View();
+        }
+
+        public IActionResult RegistrationDetails(RegistrationData model) 
+        {
+            return RedirectToAction("ThankYou");
+        }
+
+
         public IActionResult Privacy()
         {
             return View();
