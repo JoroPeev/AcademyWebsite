@@ -8,9 +8,13 @@ namespace AcademyWebsite.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly AcademyDbContext _context;
+
+
+        public HomeController(ILogger<HomeController> logger, AcademyDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -20,7 +24,9 @@ namespace AcademyWebsite.Controllers
 
         public IActionResult ThankYou()
         {
-            return View();
+            var allRegistrations = _context.RegistrationData.ToList();
+
+            return View(allRegistrations);
         }
 
         public IActionResult RegistrationData()
@@ -30,9 +36,32 @@ namespace AcademyWebsite.Controllers
 
         public IActionResult RegistrationDetails(RegistrationData model) 
         {
+            _context.RegistrationData.Add(model);
+            
+            _context.SaveChanges();
+            
             return RedirectToAction("ThankYou");
         }
 
+        public IActionResult EditRegistrationData(int? id)
+        {
+            if (id!=null)
+            {
+                var datainDb = _context.RegistrationData.SingleOrDefault(ex => ex.Id == id);
+                return View(datainDb);
+            }
+
+
+
+            return View();
+        }
+        public IActionResult DeleteRegistrationData(int id)
+        {
+            var datainDb = _context.RegistrationData.SingleOrDefault(ex => ex.Id == id);
+            _context.RegistrationData.Remove(datainDb);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
 
         public IActionResult Privacy()
         {
