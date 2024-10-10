@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model List<RegistrationData>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,7 +11,50 @@
     <div class="container text-center mt-5">
         <div class="card p-4 shadow-lg border-0">
             <h1 class="display-4">Thank You!</h1>
-            <p class="lead">We appreciate you reaching out to us. We have received your message and will get back to you soon.</p>
+            <table>
+    <thead>
+        <tr>
+            <th>
+                ChildName
+            </th>
+            <th>
+                ChildAge
+            </th>
+            <th>
+                ParentName
+            </th>
+            <th>
+                PhoneNumber
+            </th>
+            <th>
+                EmailAddress
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+        foreach (var item in Model)
+        {
+        <tr>
+        <td>@item.ChildName</td>
+        <td>@item.ChildAge</td>
+        <td>@item.ParentName</td>
+        <td>@item.PhoneNumber</td>
+        <td>@item.EmailAddress</td>
+        <td>
+
+        <a asp-action="EditRegistrationData" asp-route-id="@item.Id">Edit</a>
+        <a asp-action="EditRegistrationData" asp-route-id="@item.Id">Delete</a>
+        
+        </td>
+        </tr>
+        }
+        }
+    </tbody>
+</table>
             <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Return to Home</a>
         </div>
     </div>
