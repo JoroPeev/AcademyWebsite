@@ -1,7 +1,10 @@
-﻿namespace AcademyWebsite.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AcademyWebsite.Models
 {
     public class RegistrationData
     {
+        [Key]
         public required int Id { get; set; }
 
         public required string ChildName { get; set; }

@@ -4,6 +4,9 @@
 @model AcademyWebsite.Models.RegistrationData
 
 <form asp-action="RegistrationDetails" asp-controller="Home">
+
+    <input hidden class="form-control" type="text" placeholder="" asp-for="Id" />
+
     <label>ChildName</label>
     <input class="form-control" type="text" placeholder="Enter child's name" asp-for="ChildName" />
 
