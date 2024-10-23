@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AcademyWebsite.SeedData;
+using Microsoft.EntityFrameworkCore;
 
 namespace AcademyWebsite.Models
 {
@@ -10,6 +11,13 @@ namespace AcademyWebsite.Models
             
         }
         public DbSet<RegistrationData> RegistrationData { get; set; }
-        
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.ApplyConfiguration(new RegistrationConfigoration());
+           
+            base.OnModelCreating(builder);
+        }
+
     }
 }
