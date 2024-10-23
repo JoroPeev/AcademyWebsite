@@ -22,45 +22,49 @@ namespace AcademyWebsite.Controllers
             return View();
         }
 
-        public IActionResult ThankYou()
+        public IActionResult RegistrationData()
+        {
+            return View();
+        }
+
+
+        public IActionResult RegisteredList()
         {
             var allRegistrations = _context.RegistrationData.ToList();
 
             return View(allRegistrations);
         }
 
-        public IActionResult RegistrationData()
+        public IActionResult RegistrationDetails(RegistrationData model)
         {
-            return View();
-        }
-
-        public IActionResult RegistrationDetails(RegistrationData model) 
-        {
-            _context.RegistrationData.Add(model);
-            
+            var registered = new RegistrationData
+            {
+                Id = model.Id,
+                ChildAge = model.ChildAge,
+                ChildName = model.ChildName,
+                EmailAddress = model.EmailAddress,
+                ParentName = model.ParentName,
+                PhoneNumber = model.PhoneNumber,
+            };
+            _context.Add(registered);
             _context.SaveChanges();
-            
-            return RedirectToAction("ThankYou");
+
+            return RedirectToAction("RegisteredList");
         }
 
         public IActionResult EditRegistrationData(int? id)
         {
-            if (id!=null)
-            {
-                var datainDb = _context.RegistrationData.SingleOrDefault(ex => ex.Id == id);
-                return View(datainDb);
-            }
+            var datainDb = _context.RegistrationData.SingleOrDefault(ex => ex.Id == id);
 
 
-
-            return View();
+            return View(datainDb);
         }
         public IActionResult DeleteRegistrationData(int id)
         {
             var datainDb = _context.RegistrationData.SingleOrDefault(ex => ex.Id == id);
             _context.RegistrationData.Remove(datainDb);
             _context.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("RegisteredList");
         }
 
         public IActionResult Privacy()
