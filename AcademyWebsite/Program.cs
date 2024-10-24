@@ -1,6 +1,7 @@
 using AcademyWebsite.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using AcademyWebsite.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
