@@ -59,6 +59,33 @@ namespace AcademyWebsite.Controllers
 
             return View(datainDb);
         }
+        [HttpPost]
+        public IActionResult EditRegistrationData(RegistrationData registration)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(registration); 
+            }
+
+            var model = _context.RegistrationData.SingleOrDefault(ex => ex.Id == registration.Id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            model.PhoneNumber = registration.PhoneNumber;
+            model.ParentName = registration.ParentName;
+            model.EmailAddress = registration.EmailAddress;
+            model.ChildName = registration.ChildName;
+            model.EmailAddress = registration.EmailAddress;
+            model.ChildAge =registration.ChildAge;
+
+            _context.Update(model);
+            _context.SaveChanges();
+
+            return RedirectToAction("RegisteredList");
+        }
+
         public IActionResult DeleteRegistrationData(int id)
         {
             var datainDb = _context.RegistrationData.SingleOrDefault(ex => ex.Id == id);
