@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AcademyWebsite.Models;
+using AcademyWebsite.SeedData;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,11 +13,12 @@ public class AcademyWebsiteContext : IdentityDbContext<IdentityUser>
     {
     }
 
+    public DbSet<RegistrationData> RegistrationData { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        builder.ApplyConfiguration(new RegistrationConfigoration());
+
         base.OnModelCreating(builder);
-        // Customize the ASP.NET Identity model and override the defaults if needed.
-        // For example, you can rename the ASP.NET Identity table names and more.
-        // Add your customizations after calling base.OnModelCreating(builder);
     }
 }
