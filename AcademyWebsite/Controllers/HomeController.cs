@@ -1,3 +1,4 @@
+using AcademyWebsite.Data;
 using AcademyWebsite.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -8,10 +9,10 @@ namespace AcademyWebsite.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        private readonly AcademyDbContext _context;
+        private readonly AcademyWebsiteContext _context;
 
 
-        public HomeController(ILogger<HomeController> logger, AcademyDbContext context)
+        public HomeController(ILogger<HomeController> logger, AcademyWebsiteContext context)
         {
             _logger = logger;
             _context = context;
