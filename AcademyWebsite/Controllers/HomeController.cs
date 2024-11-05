@@ -65,7 +65,7 @@ namespace AcademyWebsite.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(registration); 
+                return View(registration);
             }
 
             var model = _context.RegistrationData.SingleOrDefault(ex => ex.Id == registration.Id);
@@ -79,7 +79,7 @@ namespace AcademyWebsite.Controllers
             model.EmailAddress = registration.EmailAddress;
             model.ChildName = registration.ChildName;
             model.EmailAddress = registration.EmailAddress;
-            model.ChildAge =registration.ChildAge;
+            model.ChildAge = registration.ChildAge;
 
             _context.Update(model);
             _context.SaveChanges();
