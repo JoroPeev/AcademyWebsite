@@ -1,9 +1,25 @@
-using AcademyWebsite.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using AcademyWebsite.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+
+})
+.AddCookie()
+.AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+{
+    options.ClientId = builder.Configuration.GetSection("GoogleKeys:ClientId").Value;
+    options.ClientSecret = builder.Configuration.GetSection("GoogleKeys:ClientSecret").Value;
+});
+
+
 
 builder.Services.AddControllersWithViews();
 
@@ -35,6 +51,6 @@ app.UseEndpoints(endpoints =>
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-   endpoints.MapRazorPages();
+    endpoints.MapRazorPages();
 });
 app.Run();
