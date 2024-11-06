@@ -1,5 +1,6 @@
 using AcademyWebsite.Data;
 using AcademyWebsite.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -52,7 +53,7 @@ namespace AcademyWebsite.Controllers
 
             return RedirectToAction("RegisteredList");
         }
-
+        [Authorize]
         public IActionResult EditRegistrationData(int? id)
         {
             var datainDb = _context.RegistrationData.SingleOrDefault(ex => ex.Id == id);
@@ -60,6 +61,7 @@ namespace AcademyWebsite.Controllers
 
             return View(datainDb);
         }
+        [Authorize]
         [HttpPost]
         public IActionResult EditRegistrationData(RegistrationData registration)
         {
@@ -86,7 +88,7 @@ namespace AcademyWebsite.Controllers
 
             return RedirectToAction("RegisteredList");
         }
-
+        [Authorize]
         public IActionResult DeleteRegistrationData(int id)
         {
             var datainDb = _context.RegistrationData.SingleOrDefault(ex => ex.Id == id);
