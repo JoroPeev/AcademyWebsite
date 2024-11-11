@@ -24,6 +24,11 @@ namespace AcademyWebsite.Controllers
             return View();
         }
 
+        public IActionResult AboutUs()
+        {
+            return View();
+        }
+
         public IActionResult RegistrationData()
         {
             return View();
