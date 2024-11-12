@@ -29,8 +29,11 @@ builder.Services.AddDbContext<AcademyWebsiteContext>(options =>
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AcademyWebsiteContext>();
 
+builder.Services.AddSignalR();//SignalR
+
 
 var app = builder.Build();
+
 
 if (!app.Environment.IsDevelopment())
 {
