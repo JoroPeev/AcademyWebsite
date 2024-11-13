@@ -1,4 +1,5 @@
 using AcademyWebsite.Data;
+using AcademyWebsite.SignalR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
@@ -56,4 +57,8 @@ app.UseEndpoints(endpoints =>
 
     endpoints.MapRazorPages();
 });
+
+// Map your hub to an endpoint
+app.MapHub<ChatHub>("/chatHub");
+
 app.Run();
