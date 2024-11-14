@@ -6,20 +6,17 @@ using System.Diagnostics;
 
 namespace AcademyWebsite.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(AcademyWebsiteContext context) : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        private readonly AcademyWebsiteContext _context;
-
-
-        public HomeController(ILogger<HomeController> logger, AcademyWebsiteContext context)
-        {
-            _logger = logger;
-            _context = context;
-        }
+        //Primary Constructor
+        private readonly AcademyWebsiteContext _context = context;
 
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Chat()
         {
             return View();
         }
