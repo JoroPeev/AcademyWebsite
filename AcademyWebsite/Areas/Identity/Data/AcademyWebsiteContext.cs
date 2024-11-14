@@ -14,6 +14,8 @@ public class AcademyWebsiteContext : IdentityDbContext<IdentityUser>
     }
 
     public DbSet<RegistrationData> RegistrationData { get; set; }
+    public DbSet<Message> Messages { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
