@@ -1,0 +1,67 @@
+﻿<input id="userInput" type="text" placeholder="Username" />
+<input id="messageInput" type="text" placeholder="Message" />
+<button onclick="sendMessage()">Send</button>
+
+<div id="messagesList"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+<script type="text/javascript">
+    // Establish connection to SignalR Hub
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/chatHub")
+        .build();
+
+    // Define client-side function to receive new messages
+    connection.on("ReceiveMessage", (user, message, timestamp) => {
+        const parsedTimestamp = new Date(timestamp); // Parse timestamp into Date object
+        const formattedTime = !isNaN(parsedTimestamp.getTime())
+            ? parsedTimestamp.toLocaleTimeString()
+            : "Invalid Date";
+
+        const msg = document.createElement("div");
+        msg.textContent = `${user}: ${message} [${formattedTime}]`;
+        document.getElementById("messagesList").appendChild(msg);
+    });
+
+    // Handle receiving previous messages
+    connection.on("LoadMessages", function (messages) {
+        messages.forEach(function (message) {
+            console.log("Raw timestamp from server:", message.timestamp); // Check format
+            const parsedTimestamp = new Date(message.timestamp); // Parse the date
+
+            // Check if the date is valid before displaying
+            const formattedTime = !isNaN(parsedTimestamp.getTime())
+                ? parsedTimestamp.toLocaleTimeString()
+                : "Invalid Date";
+
+            const msg = document.createElement("div");
+            msg.textContent = `${message.user}: ${message.text} [${formattedTime}]`;
+            document.getElementById("messagesList").appendChild(msg);
+        });
+    });
+
+    // Start the connection and handle loading messages after successful connection
+    connection.start()
+        .then(() => {
+            console.log("Connection started");
+            // Call LoadMessages method on the server to fetch previous messages
+            connection.invoke("LoadMessages").catch(err => console.error("Error loading messages:", err.toString()));
+        })
+        .catch(err => console.error("Error starting connection:", err.toString()));
+
+    // Function to send message
+    function sendMessage() {
+        const user = document.getElementById("userInput").value;
+        const message = document.getElementById("messageInput").value;
+
+        // Check for empty inputs
+        if (user.trim() === "" || message.trim() === "") {
+            alert("Please enter both username and message.");
+            return;
+        }
+
+        // Invoke SendMessage on the server
+        connection.invoke("SendMessage", user, message)
+            .catch(err => console.error("Error sending message:", err.toString()));
+    }
+</script>
