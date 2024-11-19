@@ -1,60 +1,76 @@
-﻿namespace AcademyWebsite.SignalR;
-
-using AcademyWebsite.Data;
-using AcademyWebsite.Models;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-
-public class ChatHub : Hub
+﻿namespace AcademyWebsite.SignalR
 {
-    private readonly AcademyWebsiteContext _context;
+    using AcademyWebsite.Data;
+    using AcademyWebsite.Models;
+    using Microsoft.AspNetCore.SignalR;
+    using Microsoft.EntityFrameworkCore;
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
 
-    public ChatHub(AcademyWebsiteContext context)
+    public class ChatHub : Hub
     {
-        _context = context;
-    }
-    public async Task LoadMessages()
-    {
-        var messages = await _context.Messages
-            .OrderBy(m => m.TimeStamp) // Order by time
-            .Select(m => new
-            {
-                m.User,
-                m.Text,
-                TimeStamp = m.TimeStamp // Send DateTime directly
-            })
-            .ToListAsync();
+        private readonly AcademyWebsiteContext _context;
 
-        // Send previous messages to the caller (the user who connected)
-        await Clients.Caller.SendAsync("LoadMessages", messages);
-    }
-    public async Task SendMessage(string user, string message)
-    {
-        var chatMessage = new Message
+        public ChatHub(AcademyWebsiteContext context)
         {
-            User = user,
-            Text = message,
-            TimeStamp = DateTime.UtcNow
-        };
+            _context = context;
+        }
+        public async Task LoadMessages()
+        {
+            var messages = await _context.Messages
+                .OrderByDescending(m => m.TimeStamp)
+                .Take(10)
+                .OrderBy(m => m.TimeStamp)
+                .Select(m => new
+                {
+                    m.User,
+                    m.Text
+                })
+                .ToListAsync();
 
-        _context.Messages.Add(chatMessage);
-        await _context.SaveChangesAsync();
 
-        await Clients.All.SendAsync("ReceiveMessage", user, message, chatMessage.TimeStamp);
-    }
+            await Clients.Caller.SendAsync("LoadMessages", messages);
+        }
 
-    public override async Task OnConnectedAsync()
-    {
-        // Retrieve the last 50 messages (or whatever limit you want)
-        var messages = _context.Messages
-            .OrderBy(m => m.TimeStamp)
-            .Take(20)
-            .ToList();
 
-        // Send previous messages to the connecting client
-        await Clients.Caller.SendAsync("LoadMessages", messages);
 
-        await base.OnConnectedAsync();
+
+        public async Task SendMessage(string user, string message)
+        {
+            var chatMessage = new Message
+            {
+                User = user,
+                Text = message,
+                TimeStamp = DateTime.UtcNow
+            };
+
+            _context.Messages.Add(chatMessage);
+            await _context.SaveChangesAsync();
+
+            await Clients.All.SendAsync("ReceiveMessage", user, message);
+        }
+
+
+        public override async Task OnConnectedAsync()
+        {
+            var messages = await _context.Messages
+                .OrderByDescending(m => m.TimeStamp)
+                .Take(10)
+                .Select(m => new
+                {
+                    m.User,
+                    m.Text,
+                    TimeStamp = m.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss")
+                })
+                .ToListAsync();
+
+            messages.Reverse();
+
+            await Clients.Caller.SendAsync("LoadMessages", messages);
+
+            await base.OnConnectedAsync();
+        }
+
     }
 }
