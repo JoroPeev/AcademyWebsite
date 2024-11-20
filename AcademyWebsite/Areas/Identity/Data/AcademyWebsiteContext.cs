@@ -19,7 +19,7 @@ public class AcademyWebsiteContext : IdentityDbContext<IdentityUser>
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.ApplyConfiguration(new RegistrationConfigoration());
+        builder.ApplyConfiguration(new RegistrationConfiguration());
 
         base.OnModelCreating(builder);
     }
