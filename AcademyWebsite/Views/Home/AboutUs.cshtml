@@ -63,5 +63,20 @@
             <p>At VKAcademy, we believe in going beyond business as usual. We are dedicated to customer-first values. We are here to help you Our products and services are designed to nurture children’s natural curiosity, making learning engaging and accessible. Through interactive and age-appropriate resources, we help children develop essential skills, build confidence, and foster a love for discovery that supports their academic and personal growth. By creating a joyful learning journey, we aim to equip children with tools for lifelong success and adaptability.</p>
         </div>
     </div>
+
 </body>
+<
+<div id="map" style="height: 400px; width: 100%;"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script>
+    const map = L.map('map').setView([37.7749, -122.4194], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+    }).addTo(map);
+    L.marker([42.135066, 24.739292]).addTo(map).bindPopup('Our Location').openPopup();
+</script>
+
+
 </html>
+
