@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AcademyWebsite.SeedData
 {
-    internal class RegistrationConfigoration: IEntityTypeConfiguration<RegistrationData>
+    internal class RegistrationConfiguration : IEntityTypeConfiguration<RegistrationData>
     {
         public void Configure(EntityTypeBuilder<RegistrationData> builder)
         {
