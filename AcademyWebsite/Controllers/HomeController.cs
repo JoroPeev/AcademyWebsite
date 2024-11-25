@@ -31,10 +31,6 @@ namespace AcademyWebsite.Controllers
             return View();
         }
 
-        public IActionResult Courses()
-        {
-            return View();
-        }
         [Authorize]
         public IActionResult RegisteredList()
         {
