@@ -1,4 +1,5 @@
 ﻿using AcademyWebsite.Data;
+using AcademyWebsite.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AcademyWebsite.Controllers
@@ -11,5 +12,25 @@ namespace AcademyWebsite.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public IActionResult Add()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Add(Course course)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Courses.Add(course);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(course);
+        }
+
     }
 }
+
