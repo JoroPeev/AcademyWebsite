@@ -1,24 +1,32 @@
 ﻿using AcademyWebsite.Data;
 using AcademyWebsite.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AcademyWebsite.Controllers
 {
-    public class CourseController(AcademyWebsiteContext context) : Controller
+    public class CourseController : Controller
     {
-        //Primary Constructor
-        private readonly AcademyWebsiteContext _context = context;
+        private readonly AcademyWebsiteContext _context;
+
+        public CourseController(AcademyWebsiteContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Index()
         {
             return View();
         }
         [HttpGet]
+        [Authorize]
         public IActionResult Add()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Add(Course course)
         {
             if (ModelState.IsValid)
