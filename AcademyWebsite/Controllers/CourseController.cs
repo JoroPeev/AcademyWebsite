@@ -16,7 +16,8 @@ namespace AcademyWebsite.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var courses = _context.Courses.ToList();
+            return View(courses);
         }
         [HttpGet]
         [Authorize]
@@ -38,7 +39,50 @@ namespace AcademyWebsite.Controllers
 
             return View(course);
         }
+        [HttpGet]
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var course = _context.Courses.FirstOrDefault(c => c.Id == id);
+            if (course == null)
+            {
+                return NotFound();
+            }
 
+            return View(course);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Edit(int id, Course updatedCourse)
+        {
+            if (id != updatedCourse.Id)
+            {
+                return BadRequest();
+            }
+
+            if (ModelState.IsValid)
+            {
+                var course = _context.Courses.FirstOrDefault(c => c.Id == id);
+                if (course == null)
+                {
+                    return NotFound();
+                }
+
+                // Update course properties
+                course.Name = updatedCourse.Name;
+                course.Price = updatedCourse.Price;
+                course.Age = updatedCourse.Age;
+                course.StartDate = updatedCourse.StartDate;
+                course.EndDate = updatedCourse.EndDate;
+                course.Details = updatedCourse.Details;
+
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(updatedCourse);
+        }
     }
 }
 
