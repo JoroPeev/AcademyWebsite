@@ -1,13 +1,43 @@
-﻿<html xmlns="http://www.w3.org/1999/xhtml">
-<body>
-    <h1>Courses</h1>
-    <div>
-        <p>
-            Our child courses are designed to spark curiosity, creativity, and a love for learning! Tailored for young minds, each course offers fun and interactive lessons that make learning exciting and engaging. With a variety of subjects ranging from arts and crafts to science and technology, your child will develop new skills, explore their imagination, and build confidence. Whether they are exploring the world of colors, solving puzzles, or discovering the wonders of nature, our courses help children learn through play and hands-on activities.
-        </p>
-    </div>
+﻿@model IEnumerable<Course>
 
+<h2>Courses</h2>
 
+<a asp-action="Add" class="btn btn-primary mb-3">Add New Course</a>
 
-</body>
-</html>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Details</th>
+            <th>Price</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var course in Model)
+            {
+                <tr>
+                    <td>@course.Name</td>
+                    <td>@course.Details</td>
+                    <td>@course.Price</td>
+                    <td>@course.StartDate.ToString("yyyy-MM-dd")</td>
+                    <td>@course.EndDate.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@course.Id" class="btn btn-warning btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@course.Id" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6" class="text-center">No courses available.</td>
+            </tr>
+        }
+    </tbody>
+</table>
