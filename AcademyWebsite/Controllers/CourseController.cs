@@ -83,6 +83,36 @@ namespace AcademyWebsite.Controllers
 
             return View(updatedCourse);
         }
+        [HttpGet]
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+            var course = _context.Courses.FirstOrDefault(c => c.Id == id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            return View(course); // Shows a confirmation view for deleting the course
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var course = _context.Courses.FirstOrDefault(c => c.Id == id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            _context.Courses.Remove(course);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
     }
 }
 
