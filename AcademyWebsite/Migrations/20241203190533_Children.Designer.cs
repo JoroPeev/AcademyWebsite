@@ -4,6 +4,7 @@ using AcademyWebsite.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AcademyWebsite.Migrations
 {
     [DbContext(typeof(AcademyWebsiteContext))]
-    partial class AcademyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241203190533_Children")]
+    partial class Children
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,7 +55,7 @@ namespace AcademyWebsite.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Childrens", (string)null);
+                    b.ToTable("Childrens");
                 });
 
             modelBuilder.Entity("AcademyWebsite.Models.Course", b =>
@@ -85,7 +88,7 @@ namespace AcademyWebsite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Courses", (string)null);
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("AcademyWebsite.Models.Message", b =>
@@ -109,7 +112,7 @@ namespace AcademyWebsite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Messages", (string)null);
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("AcademyWebsite.Models.RegistrationData", b =>
@@ -141,7 +144,7 @@ namespace AcademyWebsite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RegistrationData", (string)null);
+                    b.ToTable("RegistrationData");
 
                     b.HasData(
                         new
