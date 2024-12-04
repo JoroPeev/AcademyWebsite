@@ -2,6 +2,7 @@
 using AcademyWebsite.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AcademyWebsite.Controllers
 {
@@ -112,6 +113,53 @@ namespace AcademyWebsite.Controllers
 
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        [Route("Course/Join/{courseId}")]
+        public IActionResult Join(int courseId)
+        {
+            var course = _context.Courses.Include(c => c.Childrens).FirstOrDefault(c => c.Id == courseId);
+            if (course == null)
+            {
+                return NotFound();
+            }
+            var joinViewModel = new JoinChildViewModel
+            {
+                CourseId = courseId,
+                CourseName = course.Name,
+                CourseAge = course.Age
+            };
+            return View(joinViewModel);
+        }
+        [HttpPost]
+        public IActionResult Join(JoinChildViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var course = _context.Courses.Include(c => c.Childrens).FirstOrDefault(c => c.Id == viewModel.CourseId);
+
+                if (course == null)
+                {
+                    return NotFound();
+                }
+
+                var child = new Children
+                {
+                    Name = viewModel.Name,
+                    ParentName = viewModel.ParentName,
+                    Email = viewModel.Email,
+                    ChildAge = viewModel.ChildAge,
+                    CourseId = course.Id
+                };
+
+                _context.Childrens.Add(child);
+                _context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+
+            return View(viewModel);
+        }
+
 
     }
 }
