@@ -20,6 +20,10 @@ namespace AcademyWebsite.Controllers
             var courses = _context.Courses.ToList();
             return View(courses);
         }
+        public IActionResult SuccessfullyAddedChild()
+        {
+            return View();
+        }
         [HttpGet]
         [Authorize]
         public IActionResult Add()
@@ -77,7 +81,7 @@ namespace AcademyWebsite.Controllers
                 course.StartDate = updatedCourse.StartDate;
                 course.EndDate = updatedCourse.EndDate;
                 course.Details = updatedCourse.Details;
-
+                course.ImageUrl = updatedCourse.ImageUrl;
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -154,7 +158,7 @@ namespace AcademyWebsite.Controllers
                 _context.Childrens.Add(child);
                 _context.SaveChanges();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("SuccessfullyAddedChild");
             }
 
             return View(viewModel);
