@@ -4,41 +4,37 @@
 
 <a asp-action="Add" class="btn btn-primary mb-3">Add New Course</a>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Details</th>
-            <th>Price</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model != null && Model.Any())
+<div class="row">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var course in Model)
         {
-            foreach (var course in Model)
-            {
-                <tr>
-                    <td>@course.Name</td>
-                    <td>@course.Details</td>
-                    <td>@course.Price</td>
-                    <td>@course.StartDate.ToString("yyyy-MM-dd")</td>
-                    <td>@course.EndDate.ToString("yyyy-MM-dd")</td>
-                    <td>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>@course.Name</h4>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Name:</strong> @course.Name</p>
+                        <p><strong>Price:</strong> @course.Price</p>
+                        <p><strong>Start Date:</strong> @course.StartDate.ToString("yyyy-MM-dd")</p>
+                        <p><strong>End Date:</strong> @course.EndDate.ToString("yyyy-MM-dd")</p>
+                    </div>
+                    <div class="card-footer text-right">
                         <a asp-action="Edit" asp-route-id="@course.Id" class="btn btn-warning btn-sm">Edit</a>
                         <a asp-action="Delete" asp-route-id="@course.Id" class="btn btn-danger btn-sm">Delete</a>
                         <a asp-action="Join" asp-route-id="@course.Id" class="btn btn-success btn-sm">Enroll a Child</a>
-                    </td>
-                </tr>
-            }
+                    </div>
+                </div>
+            </div>
         }
-        else
-        {
-            <tr>
-                <td colspan="6" class="text-center">No courses available.</td>
-            </tr>
-        }
-    </tbody>
-</table>
+    }
+    else
+    {
+        <div class="col-12">
+            <div class="alert alert-warning text-center" role="alert">
+                No courses available.
+            </div>
+        </div>
+    }
+</div>
