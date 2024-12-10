@@ -17,7 +17,7 @@
         <input asp-for="Age" class="form-control" />
         <span asp-validation-for="Age" class="text-danger"></span>
     </div>
-     <div class="form-group">
+    <div class="form-group">
         <label asp-for="Price" class="form-label"></label>
         <input asp-for="Price" class="form-control" />
         <span asp-validation-for="Price" class="text-danger"></span>
@@ -27,19 +27,29 @@
         <textarea asp-for="Details" class="form-control"></textarea>
         <span asp-validation-for="Details" class="text-danger"></span>
     </div>
-
     <div class="form-group">
         <label asp-for="StartDate" class="form-label"></label>
         <input asp-for="StartDate" type="datetime-local" class="form-control" />
         <span asp-validation-for="StartDate" class="text-danger"></span>
     </div>
-
     <div class="form-group">
         <label asp-for="EndDate" class="form-label"></label>
         <input asp-for="EndDate" type="datetime-local" class="form-control" />
         <span asp-validation-for="EndDate" class="text-danger"></span>
     </div>
+    <div class="form-group">
+        <label asp-for="ImageUrl" class="form-label">Image URL</label>
+        <input asp-for="ImageUrl" class="form-control" id="imageUrlInput" oninput="updateImagePreview()" />
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
 
+    <!-- Image Preview -->
+    <div class="form-group">
+        <label>Image Preview</label>
+        <div style="width: 150px; height: 150px; border: 1px solid #ccc; display: flex; justify-content: center; align-items: center;">
+            <img id="imagePreview" src="" alt="Image Preview" style="max-width: 100%; max-height: 100%; display: none;" />
+        </div>
+    </div>
 
     <button type="submit" class="btn btn-primary">Submit</button>
     <a asp-action="Index" class="btn btn-secondary">Cancel</a>
@@ -48,4 +58,18 @@
 @section Scripts {
     <!-- Enable client-side validation -->
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        function updateImagePreview() {
+            const imageUrl = document.getElementById("imageUrlInput").value;
+            const imagePreview = document.getElementById("imagePreview");
+
+            if (imageUrl) {
+                imagePreview.src = imageUrl;
+                imagePreview.style.display = "block";
+            } else {
+                imagePreview.src = "";
+                imagePreview.style.display = "none";
+            }
+        }
+    </script>
 }
