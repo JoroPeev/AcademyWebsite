@@ -74,7 +74,6 @@ namespace AcademyWebsite.Controllers
                     return NotFound();
                 }
 
-                // Update course properties
                 course.Name = updatedCourse.Name;
                 course.Price = updatedCourse.Price;
                 course.Age = updatedCourse.Age;
@@ -98,7 +97,7 @@ namespace AcademyWebsite.Controllers
                 return NotFound();
             }
 
-            return View(course); // Shows a confirmation view for deleting the course
+            return View(course);
         }
 
         [HttpPost]
