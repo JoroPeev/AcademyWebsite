@@ -1,49 +1,82 @@
 ﻿@model Course
 
 @{
-    ViewData["Title"] = "Add Course";
+    ViewData["Title"] = "Edit Course";
 }
 
-<h2>Add Course</h2>
+<h2 class="mb-4">Edit Course</h2>
 
-<form asp-action="Add" method="post">
-    <div class="form-group">
+<form asp-action="Edit" method="post">
+    <div class="form-group mb-3">
         <label asp-for="Name" class="form-label"></label>
         <input asp-for="Name" class="form-control" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
-    <div class="form-group">
+
+    <div class="form-group mb-3">
         <label asp-for="Age" class="form-label"></label>
-        <input asp-for="Age" class="form-control" />
+        <input asp-for="Age" class="form-control" type="number" />
         <span asp-validation-for="Age" class="text-danger"></span>
     </div>
-    <div class="form-group">
+
+    <div class="form-group mb-3">
         <label asp-for="Price" class="form-label"></label>
-        <input asp-for="Price" class="form-control" />
+        <input asp-for="Price" class="form-control" type="number" step="0.01" />
         <span asp-validation-for="Price" class="text-danger"></span>
     </div>
-    <div class="form-group">
+
+    <div class="form-group mb-3">
         <label asp-for="Details" class="form-label"></label>
-        <textarea asp-for="Details" class="form-control"></textarea>
+        <textarea asp-for="Details" class="form-control" rows="4"></textarea>
         <span asp-validation-for="Details" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
+    <div class="form-group mb-3">
         <label asp-for="StartDate" class="form-label"></label>
-        <input asp-for="StartDate" type="datetime" class="form-control" />
+        <input asp-for="StartDate" class="form-control" type="datetime-local" />
         <span asp-validation-for="StartDate" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
+    <div class="form-group mb-3">
         <label asp-for="EndDate" class="form-label"></label>
-        <input asp-for="EndDate" type="datetime" class="form-control" />
+        <input asp-for="EndDate" class="form-control" type="datetime-local" />
         <span asp-validation-for="EndDate" class="text-danger"></span>
     </div>
 
-    <button type="submit">Save Changes</button>
+    <div class="form-group mb-3">
+        <label asp-for="ImageUrl" class="form-label">Image URL</label>
+        <input asp-for="ImageUrl" class="form-control" id="imageUrlInput" oninput="updateImagePreview()" />
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label class="form-label">Image Preview</label>
+        <div style="width: 150px; height: 150px; border: 1px solid #ccc; display: flex; justify-content: center; align-items: center;">
+            <img id="imagePreview" src="@Model.ImageUrl" alt="Image Preview" style="max-width: 100%; max-height: 100%; display: @(!string.IsNullOrEmpty(Model.ImageUrl) ? "block" : "none");" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
 </form>
 
 @section Scripts {
-    <!-- Enable client-side validation -->
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        function updateImagePreview() {
+            const imageUrl = document.getElementById("imageUrlInput").value;
+            const imagePreview = document.getElementById("imagePreview");
+
+            if (imageUrl) {
+                imagePreview.src = imageUrl;
+                imagePreview.style.display = "block";
+            } else {
+                imagePreview.src = "";
+                imagePreview.style.display = "none";
+            }
+        }
+    </script>
 }
