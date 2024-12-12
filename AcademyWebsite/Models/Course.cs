@@ -12,7 +12,11 @@ namespace AcademyWebsite.Models
         [Required]
         public decimal Price { get; set; }
         [Required]
+        public string Subject { get; set; }
+
+        [Required]
         public string Details { get; set; }
+        [Required]
         public string ImageUrl { get; set; }
         [Required]
         public DateTime StartDate { get; set; }
