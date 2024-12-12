@@ -2,6 +2,7 @@
 using AcademyWebsite.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace AcademyWebsite.Controllers
@@ -28,6 +29,9 @@ namespace AcademyWebsite.Controllers
         [Authorize]
         public IActionResult Add()
         {
+            var subjects = new List<string> { "Math", "Science", "Language", "Art" };
+
+            ViewBag.Subjects = new SelectList(subjects);
             return View();
         }
 
@@ -41,7 +45,8 @@ namespace AcademyWebsite.Controllers
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
-
+            var subjects = new List<string> { "Math", "Science", "Language", "Art" };
+            ViewBag.Subjects = new SelectList(subjects);
             return View(course);
         }
         [HttpGet]
@@ -53,6 +58,9 @@ namespace AcademyWebsite.Controllers
             {
                 return NotFound();
             }
+
+            var subjects = new List<string> { "Math", "Science", "Language", "Art" };
+            ViewBag.Subjects = new SelectList(subjects);
 
             return View(course);
         }
@@ -81,6 +89,11 @@ namespace AcademyWebsite.Controllers
                 course.EndDate = updatedCourse.EndDate;
                 course.Details = updatedCourse.Details;
                 course.ImageUrl = updatedCourse.ImageUrl;
+                course.Subject = updatedCourse.Subject;
+
+                var subjects = new List<string> { "Math", "Science", "Language", "Art" };
+                ViewBag.Subjects = new SelectList(subjects);
+
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
