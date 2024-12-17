@@ -1,36 +1,36 @@
-﻿using AcademyWebsite.Data;
-using AcademyWebsite.Models;
+﻿using AcademyWebsite.Models;
+using AcademyWebsite.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 namespace AcademyWebsite.Controllers
 {
     public class CourseController : Controller
     {
-        private readonly AcademyWebsiteContext _context;
+        private readonly CourseService _courseService;
 
-        public CourseController(AcademyWebsiteContext context)
+        public CourseController(CourseService courseService)
         {
-            _context = context;
+            _courseService = courseService;
         }
 
         public IActionResult Index()
         {
-            var courses = _context.Courses.ToList();
+            var courses = _courseService.GetAllCourses();
             return View(courses);
         }
+
         public IActionResult SuccessfullyAddedChild()
         {
             return View();
         }
+
         [HttpGet]
         [Authorize]
         public IActionResult Add()
         {
             var subjects = new List<string> { "Math", "Science", "Language", "Art" };
-
             ViewBag.Subjects = new SelectList(subjects);
             return View();
         }
@@ -41,19 +41,20 @@ namespace AcademyWebsite.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Courses.Add(course);
-                _context.SaveChanges();
+                _courseService.AddCourse(course);
                 return RedirectToAction("Index");
             }
+
             var subjects = new List<string> { "Math", "Science", "Language", "Art" };
             ViewBag.Subjects = new SelectList(subjects);
             return View(course);
         }
+
         [HttpGet]
         [Authorize]
         public IActionResult Edit(int id)
         {
-            var course = _context.Courses.FirstOrDefault(c => c.Id == id);
+            var course = _courseService.GetCourseById(id);
             if (course == null)
             {
                 return NotFound();
@@ -76,35 +77,18 @@ namespace AcademyWebsite.Controllers
 
             if (ModelState.IsValid)
             {
-                var course = _context.Courses.FirstOrDefault(c => c.Id == id);
-                if (course == null)
-                {
-                    return NotFound();
-                }
-
-                course.Name = updatedCourse.Name;
-                course.Price = updatedCourse.Price;
-                course.Age = updatedCourse.Age;
-                course.StartDate = updatedCourse.StartDate;
-                course.EndDate = updatedCourse.EndDate;
-                course.Details = updatedCourse.Details;
-                course.ImageUrl = updatedCourse.ImageUrl;
-                course.Subject = updatedCourse.Subject;
-
-                var subjects = new List<string> { "Math", "Science", "Language", "Art" };
-                ViewBag.Subjects = new SelectList(subjects);
-
-                _context.SaveChanges();
+                _courseService.UpdateCourse(id, updatedCourse);
                 return RedirectToAction("Index");
             }
 
             return View(updatedCourse);
         }
+
         [HttpGet]
         [Authorize]
         public IActionResult Delete(int id)
         {
-            var course = _context.Courses.FirstOrDefault(c => c.Id == id);
+            var course = _courseService.GetCourseById(id);
             if (course == null)
             {
                 return NotFound();
@@ -118,26 +102,19 @@ namespace AcademyWebsite.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            var course = _context.Courses.FirstOrDefault(c => c.Id == id);
-            if (course == null)
-            {
-                return NotFound();
-            }
-
-            _context.Courses.Remove(course);
-            _context.SaveChanges();
-
+            _courseService.DeleteCourse(id);
             return RedirectToAction("Index");
         }
-        [HttpGet]
+
         [Route("Course/Join/{courseId}")]
         public IActionResult Join(int courseId)
         {
-            var course = _context.Courses.Include(c => c.Childrens).FirstOrDefault(c => c.Id == courseId);
+            var course = _courseService.GetCourseById(courseId);
             if (course == null)
             {
                 return NotFound();
             }
+
             var joinViewModel = new JoinChildViewModel
             {
                 CourseId = courseId,
@@ -146,13 +123,13 @@ namespace AcademyWebsite.Controllers
             };
             return View(joinViewModel);
         }
+
         [HttpPost]
         public IActionResult Join(JoinChildViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var course = _context.Courses.Include(c => c.Childrens).FirstOrDefault(c => c.Id == viewModel.CourseId);
-
+                var course = _courseService.GetCourseById(viewModel.CourseId);
                 if (course == null)
                 {
                     return NotFound();
@@ -167,16 +144,11 @@ namespace AcademyWebsite.Controllers
                     CourseId = course.Id
                 };
 
-                _context.Childrens.Add(child);
-                _context.SaveChanges();
-
+                _courseService.AddChildToCourse(child);
                 return RedirectToAction("SuccessfullyAddedChild");
             }
 
             return View(viewModel);
         }
-
-
     }
 }
-
