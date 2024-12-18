@@ -1,10 +1,11 @@
-﻿using AcademyWebsite.Data;
+﻿using AcademyWebsite.Contracts;
+using AcademyWebsite.Data;
 using AcademyWebsite.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AcademyWebsite.Services
 {
-    public class CourseService
+    public class CourseService : ICourseService
     {
         private readonly AcademyWebsiteContext _context;
 
