@@ -1,6 +1,5 @@
-﻿using AcademyWebsite.Models;
-using AcademyWebsite.Services;
-using Microsoft.AspNetCore.Authorization;
+﻿using AcademyWebsite.Contracts;
+using AcademyWebsite.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -8,9 +7,9 @@ namespace AcademyWebsite.Controllers
 {
     public class CourseController : Controller
     {
-        private readonly CourseService _courseService;
+        private readonly ICourseService _courseService;
 
-        public CourseController(CourseService courseService)
+        public CourseController(ICourseService courseService)
         {
             _courseService = courseService;
         }
@@ -27,7 +26,7 @@ namespace AcademyWebsite.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [RedirectIfNotAuthenticated]
         public IActionResult Add()
         {
             var subjects = new List<string> { "Math", "Science", "Language", "Art" };
@@ -36,7 +35,7 @@ namespace AcademyWebsite.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [RedirectIfNotAuthenticated]
         public IActionResult Add(Course course)
         {
             if (ModelState.IsValid)
@@ -51,7 +50,7 @@ namespace AcademyWebsite.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [RedirectIfNotAuthenticated]
         public IActionResult Edit(int id)
         {
             var course = _courseService.GetCourseById(id);
@@ -67,7 +66,7 @@ namespace AcademyWebsite.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [RedirectIfNotAuthenticated]
         public IActionResult Edit(int id, Course updatedCourse)
         {
             if (id != updatedCourse.Id)
@@ -85,7 +84,7 @@ namespace AcademyWebsite.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [RedirectIfNotAuthenticated]
         public IActionResult Delete(int id)
         {
             var course = _courseService.GetCourseById(id);
@@ -98,14 +97,14 @@ namespace AcademyWebsite.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [RedirectIfNotAuthenticated]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
             _courseService.DeleteCourse(id);
             return RedirectToAction("Index");
         }
-
+        [HttpGet]
         [Route("Course/Join/{courseId}")]
         public IActionResult Join(int courseId)
         {
