@@ -31,7 +31,7 @@ namespace AcademyWebsite.Controllers
             return View();
         }
 
-        [Authorize]
+        [RedirectIfNotAuthenticated]
         public IActionResult RegisteredList()
         {
             var allRegistrations = _context.RegistrationData.ToList();
@@ -55,7 +55,7 @@ namespace AcademyWebsite.Controllers
 
             return RedirectToAction("RegisteredList");
         }
-        [Authorize]
+        [RedirectIfNotAuthenticated]
         public IActionResult EditRegistrationData(int? id)
         {
             var datainDb = _context.RegistrationData.SingleOrDefault(ex => ex.Id == id);
@@ -63,7 +63,7 @@ namespace AcademyWebsite.Controllers
 
             return View(datainDb);
         }
-        [Authorize]
+        [RedirectIfNotAuthenticated]
         [HttpPost]
         public IActionResult EditRegistrationData(RegistrationData registration)
         {
@@ -90,7 +90,7 @@ namespace AcademyWebsite.Controllers
 
             return RedirectToAction("RegisteredList");
         }
-        [Authorize]
+        [RedirectIfNotAuthenticated]
         public IActionResult DeleteRegistrationData(int id)
         {
             var datainDb = _context.RegistrationData.SingleOrDefault(ex => ex.Id == id);

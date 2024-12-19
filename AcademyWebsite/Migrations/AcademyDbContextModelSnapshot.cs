@@ -52,7 +52,7 @@ namespace AcademyWebsite.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Childrens");
+                    b.ToTable("Childrens", (string)null);
                 });
 
             modelBuilder.Entity("AcademyWebsite.Models.Course", b =>
@@ -93,7 +93,7 @@ namespace AcademyWebsite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
                 });
 
             modelBuilder.Entity("AcademyWebsite.Models.Message", b =>
@@ -117,7 +117,7 @@ namespace AcademyWebsite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("AcademyWebsite.Models.RegistrationData", b =>
@@ -149,7 +149,7 @@ namespace AcademyWebsite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RegistrationData");
+                    b.ToTable("RegistrationData", (string)null);
 
                     b.HasData(
                         new
