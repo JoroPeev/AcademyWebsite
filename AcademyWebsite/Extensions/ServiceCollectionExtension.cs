@@ -26,8 +26,8 @@ namespace Microsoft.Extensions.DependencyInjection
             .AddCookie()
             .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
             {
-                options.ClientId = config["GoogleKeys:ClientId"];
-                options.ClientSecret = config["GoogleKeys:ClientSecret"];
+                options.ClientId = config.GetSection("GoogleKeys:ClientId").Value;
+                options.ClientSecret = config.GetSection("GoogleKeys:ClientSecret").Value;
             });
 
             return services;
