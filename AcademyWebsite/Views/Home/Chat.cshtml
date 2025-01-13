@@ -1,62 +1,182 @@
-﻿<input id="userInput" type="text" placeholder="Username" />
-<input id="messageInput" type="text" placeholder="Message" />
-<button onclick="sendMessage()">Send</button>
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Application</title>
 
-<div id="messagesList"></div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
-<script type="text/javascript">
-    // Establish connection to SignalR Hub
-    const connection = new signalR.HubConnectionBuilder()
-        .withUrl("/chatHub")
-        .build();
-
-    // Define client-side function to receive new messages
-    connection.on("ReceiveMessage", (user, message, timestamp) => {
-        displayMessage(user, message, timestamp);
-    });
-
-    // Handle receiving previous messages without the date-time
-    connection.on("LoadMessages", function (messages) {
-        const messagesList = document.getElementById("messagesList");
-        messagesList.innerHTML = "";
-
-        if (messages && messages.length > 0) {
-            messages.forEach(message => {
-                console.log("Received message:", message);
-                displayMessageWithoutDate(message.user, message.text);
-            });
-        } else {
-            console.log("No messages received.");
-        }
-    });
-
-    function displayMessageWithoutDate(user, message) {
-        const msg = document.createElement("div");
-        msg.textContent = `${user}: ${message}`; 
-        document.getElementById("messagesList").appendChild(msg);
-    }
-
-
-    // Start the connection and handle loading messages after successful connection
-    connection.start()
-        .then(() => {
-            console.log("Connection started");
-            connection.invoke("LoadMessages").catch(err => console.error("Error loading messages:", err.toString()));
-        })
-        .catch(err => console.error("Error starting connection:", err.toString()));
-
-    // Function to send message
-    function sendMessage() {
-        const user = document.getElementById("userInput").value;
-        const message = document.getElementById("messageInput").value;
-
-        if (user.trim() === "" || message.trim() === "") {
-            alert("Please enter both username and message.");
-            return;
+    <style>
+        #chatContainer {
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            width: 400px;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
         }
 
-        connection.invoke("SendMessage", user, message)
-            .catch(err => console.error("Error sending message:", err.toString()));
-    }
-</script>
+        #messagesList {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding-right: 10px;
+        }
+
+            #messagesList div {
+                background-color: #e1f5fe;
+                padding: 10px;
+                margin: 5px;
+                border-radius: 8px;
+                max-width: 80%;
+                word-wrap: break-word;
+            }
+
+                #messagesList div:nth-child(odd) {
+                    background-color: #e3f2fd;
+                    align-self: flex-start;
+                }
+
+                #messagesList div:nth-child(even) {
+                    background-color: #bbdefb;
+                    align-self: flex-end;
+                }
+
+        .input-group {
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+            input:focus {
+                outline: none;
+                border-color: #4285f4;
+            }
+
+        button {
+            background-color: #4285f4;
+            color: white;
+            font-size: 16px;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+            button:hover {
+                background-color: #357ae8;
+            }
+
+        /* Scrollbar styling */
+        #messagesList::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #messagesList::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+            #messagesList::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
+    </style>
+</head>
+<body>
+
+    <div id="chatContainer">
+        <div id="messagesList"></div>
+
+        <div class="input-group">
+            <input id="userInput" type="text" placeholder="Username" />
+        </div>
+
+        <div class="input-group">
+            <input id="messageInput" type="text" placeholder="Message" />
+        </div>
+
+        <button id="bu" onclick="sendMessage()">Send</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <script type="text/javascript">
+        // Establish connection to SignalR Hub
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chatHub")
+            .build();
+
+        // Define client-side function to receive new messages
+        connection.on("ReceiveMessage", (user, message, timestamp) => {
+            displayMessage(user, message, timestamp);
+        });
+
+        // Handle receiving the last 10 messages
+        connection.on("LoadMessages", function (messages) {
+            const messagesList = document.getElementById("messagesList");
+            messagesList.innerHTML = "";
+
+            if (messages && messages.length > 0) {
+                // Slice and reverse to show the last 10 messages in the correct order
+                messages.slice(-10).forEach(message => {
+                    displayMessageWithoutDate(message.user, message.text);
+                });
+            } else {
+                console.log("No messages received.");
+            }
+        });
+
+        function displayMessage(user, message, timestamp) {
+            const msg = document.createElement("div");
+            msg.textContent = `${user}: ${message}`;
+            const messagesList = document.getElementById("messagesList");
+            messagesList.insertBefore(msg, messagesList.firstChild);
+            messagesList.scrollTop = messagesList.scrollHeight;  // Scroll to the bottom
+        }
+
+        function displayMessageWithoutDate(user, message) {
+            const msg = document.createElement("div");
+            msg.textContent = `${user}: ${message}`;
+            const messagesList = document.getElementById("messagesList");
+            messagesList.insertBefore(msg, messagesList.firstChild);
+            messagesList.scrollTop = messagesList.scrollHeight;  // Scroll to the bottom
+        }
+
+        // Start the connection and handle loading messages after successful connection
+        connection.start()
+            .then(() => {
+                console.log("Connection started");
+                connection.invoke("LoadMessages").catch(err => console.error("Error loading messages:", err.toString()));
+            })
+            .catch(err => console.error("Error starting connection:", err.toString()));
+
+        // Function to send message
+        function sendMessage() {
+            const user = document.getElementById("userInput").value;
+            const message = document.getElementById("messageInput").value;
+
+            if (user.trim() === "" || message.trim() === "") {
+                alert("Please enter both username and message.");
+                return;
+            }
+
+            connection.invoke("SendMessage", user, message)
+                .catch(err => console.error("Error sending message:", err.toString()));
+
+            // Clear message input after sending
+            document.getElementById("messageInput").value = "";
+        }
+    </script>
+</body>
+</html>
