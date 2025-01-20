@@ -22,7 +22,6 @@ namespace AcademyWebsite.Areas.Admin.Controllers
             return View(await _context.Courses.ToListAsync());
         }
 
-        // GET: Admin/Course/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -31,7 +30,9 @@ namespace AcademyWebsite.Areas.Admin.Controllers
             }
 
             var course = await _context.Courses
+                .Include(c => c.Childrens)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (course == null)
             {
                 return NotFound();
@@ -39,6 +40,7 @@ namespace AcademyWebsite.Areas.Admin.Controllers
 
             return View(course);
         }
+
 
         // GET: Admin/Course/Create
         public IActionResult Create()
