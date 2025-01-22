@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Make User Admin";
+}
+
+<h1>Make User Admin</h1>
+
+<form asp-action="MakeUserAdmin" method="post">
+    <div class="form-group">
+        <label for="userId">User ID:</label>
+        <input type="text" name="userId" id="userId" class="form-control" placeholder="Enter User ID" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Make Admin</button>
+</form>
