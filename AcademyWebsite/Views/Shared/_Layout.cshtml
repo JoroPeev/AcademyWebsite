@@ -33,7 +33,10 @@
                         </li>
                     </ul>
                         <partial name="_LoginPartial" />
-                        <partial name="_AdminMenuPartial" />
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <partial name="_AdminMenuPartial" />
+                        }
                 </div>
             </div>
         </nav>
