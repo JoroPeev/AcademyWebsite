@@ -17,7 +17,7 @@ namespace AcademyWebsite.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "8.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -118,49 +118,6 @@ namespace AcademyWebsite.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Messages", (string)null);
-                });
-
-            modelBuilder.Entity("AcademyWebsite.Models.RegistrationData", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ChildAge")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ChildName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EmailAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ParentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RegistrationData", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ChildAge = 5,
-                            ChildName = "Penka",
-                            EmailAddress = "JonDoe@gmail.com",
-                            ParentName = "Stanka",
-                            PhoneNumber = "1234567890"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
