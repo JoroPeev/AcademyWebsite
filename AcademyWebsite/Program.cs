@@ -1,4 +1,6 @@
+using AcademyWebsite.Extensions;
 using AcademyWebsite.SignalR;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,8 +10,6 @@ builder.Services.AddApplicationIdentity(builder.Configuration);
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
-
-await app.Services.SeedRolesAndAdminAsync();
 
 if (!app.Environment.IsDevelopment())
 {
@@ -39,5 +39,11 @@ app.UseEndpoints(endpoints =>
 });
 
 app.MapHub<ChatHub>("/chatHub");
+
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    await RoleSeeder.SeedRolesAsync(roleManager);
+}
 
 app.Run();
