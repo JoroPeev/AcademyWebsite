@@ -36,6 +36,7 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <partial name="_AdminMenuPartial" />
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Admin" asp-action="AddRole">AddRole</a>
                         }
                 </div>
             </div>
