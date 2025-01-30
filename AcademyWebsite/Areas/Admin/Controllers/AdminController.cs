@@ -1,31 +1,55 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using AcademyWebsite.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
-[Authorize(Roles = "Admin")]
+[Area("Admin")]
 public class AdminController : Controller
 {
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly AcademyWebsiteContext _context;
 
-    public AdminController(UserManager<IdentityUser> userManager)
+    public AdminController(AcademyWebsiteContext context)
     {
-        _userManager = userManager;
+        _context = context;
     }
 
-    public async Task<IActionResult> MakeUserAdmin(string userId)
+    public async Task<IActionResult> AddRole()
     {
-        var user = await _userManager.FindByIdAsync(userId);
-        if (user == null)
+        var users = await _context.Users
+            .Select(u => new SelectListItem
+            {
+                Value = u.Id,
+                Text = u.UserName
+            })
+            .ToListAsync();
+
+        var viewModel = new AddRoleViewModel
         {
-            return NotFound();
+            Users = users
+        };
+
+        return View(viewModel);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddRole(AddRoleViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            // Repopulate the users dropdown if validation fails
+            model.Users = await _context.Users
+                .Select(u => new SelectListItem
+                {
+                    Value = u.Id,
+                    Text = u.UserName
+                })
+                .ToListAsync();
+
+            return View(model);
         }
 
-        var result = await _userManager.AddToRoleAsync(user, "Admin");
-        if (result.Succeeded)
-        {
-            return RedirectToAction("Index", "Home");
-        }
+        // Add your role creation logic here
 
-        return View("Error");
+        return RedirectToAction(nameof(Index));
     }
 }
