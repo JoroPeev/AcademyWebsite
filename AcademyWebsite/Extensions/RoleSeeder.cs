@@ -6,7 +6,7 @@ namespace AcademyWebsite.Extensions
     {
         public static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
         {
-            var roles = new[] { "Admin", "User" }; // Add more roles if needed
+            var roles = new[] { "Admin", "Manager", "User" }; // Add more roles if needed
 
             foreach (var role in roles)
             {
