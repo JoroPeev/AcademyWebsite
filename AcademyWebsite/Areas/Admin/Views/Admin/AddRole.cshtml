@@ -1,17 +1,16 @@
-﻿@model AddRoleViewModel
+﻿@model AcademyWebsite.Models.AddRoleViewModel
 
-<h2>Add Role</h2>
-
-<form asp-action="AddRole" method="post">
-    <div class="form-group">
-        <label asp-for="UserId"></label>
-        <input asp-for="UserId" class="form-control" />
-        <span asp-validation-for="UserId" class="text-danger"></span>
+@using (Html.BeginForm())
+{
+    <div>
+        <label for="RoleName">Role Name</label>
+        @Html.TextBoxFor(m => m.RoleName)
     </div>
-    <div class="form-group">
-        <label asp-for="RoleName"></label>
-        <input asp-for="RoleName" class="form-control" />
-        <span asp-validation-for="RoleName" class="text-danger"></span>
+    <div>
+        <label for="SelectedUserId">Select User</label>
+        @Html.DropDownListFor(m => m.SelectedUserId, Model.Users, "-- Select User --")
     </div>
-    <button type="submit" class="btn btn-primary">Add Role</button>
-</form>
+    <div>
+        <button type="submit">Create Role</button>
+    </div>
+}
