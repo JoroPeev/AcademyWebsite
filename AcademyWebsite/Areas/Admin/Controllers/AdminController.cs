@@ -1,7 +1,9 @@
-﻿using AcademyWebsite.Data;
+﻿using AcademyWebsite.Areas.Admin.Models;
+using AcademyWebsite.Data;
+using AcademyWebsite.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 [Area("Admin")]
 public class AdminController : Controller
@@ -13,43 +15,46 @@ public class AdminController : Controller
         _context = context;
     }
 
-    public async Task<IActionResult> AddRole()
+    // GET: Role/Add
+    public ActionResult AddRole()
     {
-        var users = await _context.Users
-            .Select(u => new SelectListItem
-            {
-                Value = u.Id,
-                Text = u.UserName
-            })
-            .ToListAsync();
-
-        var viewModel = new AddRoleViewModel
+        var model = new AddRoleViewModel
         {
-            Users = users
+            Users = GetUsers() // Method to fetch users from the database
         };
-
-        return View(viewModel);
+        return View(model);
     }
 
+    // POST: Role/Add
     [HttpPost]
-    public async Task<IActionResult> AddRole(AddRoleViewModel model)
+    public ActionResult AddRole(AddRoleViewModel model)
     {
-        if (!ModelState.IsValid)
+        if (ModelState.IsValid)
         {
-            // Repopulate the users dropdown if validation fails
-            model.Users = await _context.Users
-                .Select(u => new SelectListItem
-                {
-                    Value = u.Id,
-                    Text = u.UserName
-                })
-                .ToListAsync();
-
-            return View(model);
+            // Save the role and selected user to the database
+            SaveRole(model.RoleName, model.SelectedUserId);
+            return RedirectToAction("Index"); // Redirect to a list or confirmation page
         }
+        model.Users = GetUsers(); // Re-populate the user list in case of validation errors
+        return View(model);
+    }
 
-        // Add your role creation logic here
+    private List<SelectListItem> GetUsers()
+    {
+        // Fetch users from the database and convert to SelectListItem
+        var users = _context.Users.Select(u => new SelectListItem
+        {
+            Value = u.Id,
+            Text = u.UserName
+        }).ToList();
+        return users;
+    }
 
-        return RedirectToAction(nameof(Index));
+    private void SaveRole(string roleName, string userId)
+    {
+        // Save the role and user association to the database
+        var role = new Role { Name = roleName, UserId = userId };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
     }
 }
