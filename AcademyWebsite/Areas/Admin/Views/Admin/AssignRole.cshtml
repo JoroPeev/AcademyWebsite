@@ -1,0 +1,22 @@
+﻿@model AcademyWebsite.Areas.Admin.Models.AssignRoleViewModel
+
+@using (Html.BeginForm())
+{
+    <div class="card p-3">
+        <h4>Assign Manager Role</h4>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.UserId, "Select User", new { @class = "form-label" })
+            @Html.DropDownListFor(m => m.UserId, (SelectList)ViewBag.Users, "Select a user", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.UserId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.HiddenFor(m => m.UserName)
+        </div>
+
+        <div class="form-group mt-3">
+            <button type="submit" class="btn btn-primary">Assign Manager Role</button>
+        </div>
+    </div>
+}
