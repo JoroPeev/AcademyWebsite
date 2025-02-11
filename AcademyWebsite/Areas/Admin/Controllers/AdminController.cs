@@ -1,60 +1,80 @@
 ﻿using AcademyWebsite.Areas.Admin.Models;
-using AcademyWebsite.Data;
-using AcademyWebsite.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Data;
 
 [Area("Admin")]
+[Authorize(Roles = "Admin")]
 public class AdminController : Controller
 {
-    private readonly AcademyWebsiteContext _context;
+    private readonly UserManager<IdentityUser> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
 
-    public AdminController(AcademyWebsiteContext context)
+    public AdminController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
     {
-        _context = context;
+        _userManager = userManager;
+        _roleManager = roleManager;
+    }
+    public IActionResult Index()
+    {
+        return View();
     }
 
-    // GET: Role/Add
-    public ActionResult AddRole()
+    [Authorize(Roles = "Admin")]
+    [HttpGet]
+    public async Task<ActionResult> AssignRole()
     {
-        var model = new AddRoleViewModel
+        var users = _userManager.Users
+            .Select(u => new SelectListItem
+            {
+                Value = u.Id,
+                Text = u.UserName
+            }).ToList();
+
+        var model = new AssignRoleViewModel
         {
-            Users = GetUsers() // Method to fetch users from the database
+            Users = users // Ensure this is assigned properly
         };
+
         return View(model);
     }
 
-    // POST: Role/Add
+
+    [Authorize(Roles = "Admin")]
     [HttpPost]
-    public ActionResult AddRole(AddRoleViewModel model)
+    public async Task<ActionResult> AssignRole(AssignRoleViewModel model)
     {
         if (ModelState.IsValid)
         {
-            // Save the role and selected user to the database
-            SaveRole(model.RoleName, model.SelectedUserId);
-            return RedirectToAction("Index"); // Redirect to a list or confirmation page
+            var user = await _userManager.FindByIdAsync(model.UserId);
+
+            if (user != null)
+            {
+                var result = await _userManager.AddToRoleAsync(user, "Manager");
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Admin", new { area = "Admin" });
+                }
+
+                ModelState.AddModelError("", "Failed to add role");
+            }
+            else
+            {
+                ModelState.AddModelError("", "User not found");
+            }
         }
-        model.Users = GetUsers(); // Re-populate the user list in case of validation errors
+
+        // Repopulate the dropdown list if there's an error
+        model.Users = _userManager.Users
+            .Select(u => new SelectListItem
+            {
+                Value = u.Id,
+                Text = u.UserName
+            }).ToList();
+
         return View(model);
     }
 
-    private List<SelectListItem> GetUsers()
-    {
-        // Fetch users from the database and convert to SelectListItem
-        var users = _context.Users.Select(u => new SelectListItem
-        {
-            Value = u.Id,
-            Text = u.UserName
-        }).ToList();
-        return users;
-    }
-
-    private void SaveRole(string roleName, string userId)
-    {
-        // Save the role and user association to the database
-        var role = new Role { Name = roleName, UserId = userId };
-        _context.Roles.Add(role);
-        _context.SaveChanges();
-    }
 }
