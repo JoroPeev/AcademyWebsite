@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Admin Dashboard</h2>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3 mb-4">
+                <h5>Manage Users</h5>
+                <p>View, add, edit, or remove courses.</p>
+                <a href="@Url.Action("Index", "Course", new { area = "Admin" })" class="btn btn-primary">Go to Users</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3 mb-4">
+                <h5>Manage Roles</h5>
+                <p>Assign and modify user roles.</p>
+                <a href="@Url.Action("AssignRole", "Admin", new { area = "Admin" })" class="btn btn-primary">Go to Roles</a>
+            </div>
+        </div>
+    </div>
+</div>
