@@ -27,7 +27,7 @@
                             <a class="nav-link" asp-area="" asp-controller="Course" asp-action="Index">Courses</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="AboutUs">AboutUs</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="AboutUs">About Us</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Chat">Chat</a>
@@ -35,15 +35,35 @@
                     </ul>
                     <div class="d-flex align-items-center">
                         <partial name="_LoginPartial" />
+
+                        <!-- Admin Section -->
                         @if (User.IsInRole("Admin"))
                         {
-                            <div class="admin-section">
-                                <span class="admin-badge">Admin</span>
-                                <div class="dropdown">
+                            <div class="dropdown ms-3">
+                                <button class="btn btn-outline-primary dropdown-toggle" type="button" id="adminDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Admin
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="adminDropdown">
                                     <partial name="_AdminMenuPartial" />
-                                </div>
+                                </ul>
                             </div>
                         }
+
+                        <!-- Manager Section -->
+                        @if (User.IsInRole("Manager"))
+                        {
+                            <div class="dropdown ms-3">
+                                <button class="btn btn-outline-success dropdown-toggle manager-btn" type="button" id="managerDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Manager
+                                </button>
+                                <!-- Remove 'dropdown-menu-end' to align left -->
+                                <ul class="dropdown-menu" aria-labelledby="managerDropdown">
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Course" asp-action="Index">Manage Courses</a></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Course" asp-action="Create">Create New Course</a></li>
+                                </ul>
+                            </div>
+                        }
+
                     </div>
                 </div>
             </div>
