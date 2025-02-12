@@ -66,7 +66,6 @@ public class AdminController : Controller
             }
         }
 
-        // Repopulate the dropdown list if there's an error
         model.Users = _userManager.Users
             .Select(u => new SelectListItem
             {
