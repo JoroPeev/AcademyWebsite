@@ -34,7 +34,7 @@ public class AdminController : Controller
 
         var model = new AssignRoleViewModel
         {
-            Users = users // Ensure this is assigned properly
+            Users = users
         };
 
         return View(model);
