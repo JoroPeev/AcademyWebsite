@@ -33,36 +33,30 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Chat">Chat</a>
                         </li>
                     </ul>
+                    <!-- Admin Section -->
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div class="dropdown ms-3">
+                            <partial name="_AdminMenuPartial" />
+                        </div>
+                    }
+
+                    <!-- Manager Section -->
+                    @if (User.IsInRole("Manager"))
+                    {
+                        <div class="dropdown ms-3">
+                            <button class="btn btn-outline-success dropdown-toggle manager-btn" type="button" id="managerDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Manager
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="managerDropdown">
+                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Course" asp-action="Index">Manage Courses</a></li>
+                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Course" asp-action="Create">New Course</a></li>
+                            </ul>
+                        </div>
+                    }
                     <div class="d-flex align-items-center">
                         <partial name="_LoginPartial" />
 
-                        <!-- Admin Section -->
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <div class="dropdown ms-3">
-                                <button class="btn btn-outline-primary dropdown-toggle" type="button" id="adminDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Admin
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                                    <partial name="_AdminMenuPartial" />
-                                </ul>
-                            </div>
-                        }
-
-                        <!-- Manager Section -->
-                        @if (User.IsInRole("Manager"))
-                        {
-                            <div class="dropdown ms-3">
-                                <button class="btn btn-outline-success dropdown-toggle manager-btn" type="button" id="managerDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Manager
-                                </button>
-                                <!-- Remove 'dropdown-menu-end' to align left -->
-                                <ul class="dropdown-menu" aria-labelledby="managerDropdown">
-                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Course" asp-action="Index">Manage Courses</a></li>
-                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Course" asp-action="Create">Create New Course</a></li>
-                                </ul>
-                            </div>
-                        }
 
                     </div>
                 </div>
