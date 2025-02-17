@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace AcademyWebsite.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Manager")]
+    [Authorize(Roles = "Admin,Manager")]
     public class CourseController : Controller
     {
         private readonly AcademyWebsiteContext _context;
@@ -18,7 +18,6 @@ namespace AcademyWebsite.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: Admin/Course
         public async Task<IActionResult> Index()
         {
             return View(await _context.Courses.ToListAsync());
