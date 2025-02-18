@@ -12,7 +12,7 @@ namespace AcademyWebsite.Controllers
         {
             return View();
         }
-
+        [RedirectIfNotAuthenticated]
         public IActionResult Chat()
         {
             return View();
