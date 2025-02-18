@@ -24,6 +24,23 @@ namespace AcademyWebsite.Controllers
         {
             return View();
         }
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var course = await Task.Run(() => _courseService.GetCourseById(id.Value));
+
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            return View(course);
+        }
+
 
         [HttpGet]
         [RedirectIfNotAuthenticated]
@@ -105,6 +122,7 @@ namespace AcademyWebsite.Controllers
             return RedirectToAction("Index");
         }
         [HttpGet]
+        [RedirectIfNotAuthenticated]
         [Route("Course/Join/{courseId}")]
         public IActionResult Join(int courseId)
         {
@@ -122,7 +140,7 @@ namespace AcademyWebsite.Controllers
             };
             return View(joinViewModel);
         }
-
+        [RedirectIfNotAuthenticated]
         [HttpPost]
         public IActionResult Join(JoinChildViewModel viewModel)
         {
