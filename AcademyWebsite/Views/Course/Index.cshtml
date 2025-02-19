@@ -3,7 +3,7 @@
 <div class="container">
     <h2 class="text-center mb-4">Courses</h2>
 
-    @if (User.Identity.IsAuthenticated)
+    @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
     {
         <a asp-action="Add" class="btn btn-primary mb-3">Add New Course</a>
     }
@@ -28,12 +28,16 @@
                         </div>
 
                         <div class="card-footer text-right">
-                            @if (User.Identity.IsAuthenticated)
+                            @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
                             {
                                 <a asp-action="Edit" asp-route-id="@course.Id" class="btn btn-warning btn-sm">Edit</a>
                                 <a asp-action="Delete" asp-route-id="@course.Id" class="btn btn-danger btn-sm">Delete</a>
                             }
-                            <a asp-action="Join" asp-route-id="@course.Id" class="btn btn-success btn-sm">Enroll a Child</a>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a asp-action="Join" asp-route-id="@course.Id" class="btn btn-success btn-sm">Enroll a Child</a>
+                            }
+                            <a asp-action="Details" asp-route-id="@course.Id" class="btn btn-primary btn-sm">Details</a>
                         </div>
                     </div>
                 </div>
