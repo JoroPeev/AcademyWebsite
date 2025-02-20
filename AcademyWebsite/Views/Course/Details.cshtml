@@ -4,57 +4,45 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1 class="mb-4">Course Details</h1>
 
-<div>
-    <h4>Course</h4>
+<div class="card shadow-sm p-4 mb-4">
+    <h4 class="card-title">Course Information</h4>
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Age)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Age)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Subject)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Subject)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Details)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Details)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-    </dl>
+    <div class="row">
+        <div class="col-md-6">
+            <dl class="row">
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Name)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Name)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Age)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Age)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Price)</dt>
+                <dd class="col-sm-8">$@Html.DisplayFor(model => model.Price)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Subject)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Subject)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Details)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Details)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.StartDate)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.StartDate)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.EndDate)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.EndDate)</dd>
+            </dl>
+        </div>
+        <div class="col-md-6 text-center">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" class="img-fluid rounded shadow" style="max-height: 250px;" alt="Course Image">
+            }
+        </div>
+    </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="mt-4">
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </div>
