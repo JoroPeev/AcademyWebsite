@@ -45,4 +45,8 @@
 
 <div class="mt-4">
     <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <a asp-action="Join" asp-route-id="@Model.Id" class="btn btn-success btn-sm">Enroll a Child</a>
+    }
 </div>
