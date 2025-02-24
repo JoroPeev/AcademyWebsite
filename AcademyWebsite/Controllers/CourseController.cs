@@ -1,5 +1,6 @@
 ﻿using AcademyWebsite.Contracts;
 using AcademyWebsite.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -44,6 +45,7 @@ namespace AcademyWebsite.Controllers
 
         [HttpGet]
         [RedirectIfNotAuthenticated]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Add()
         {
             var subjects = new List<string> { "Math", "Science", "Language", "Art" };
@@ -53,6 +55,7 @@ namespace AcademyWebsite.Controllers
 
         [HttpPost]
         [RedirectIfNotAuthenticated]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Add(Course course)
         {
             if (ModelState.IsValid)
@@ -68,6 +71,7 @@ namespace AcademyWebsite.Controllers
 
         [HttpGet]
         [RedirectIfNotAuthenticated]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Edit(int id)
         {
             var course = _courseService.GetCourseById(id);
@@ -84,6 +88,7 @@ namespace AcademyWebsite.Controllers
 
         [HttpPost]
         [RedirectIfNotAuthenticated]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Edit(int id, Course updatedCourse)
         {
             if (id != updatedCourse.Id)
@@ -102,6 +107,7 @@ namespace AcademyWebsite.Controllers
 
         [HttpGet]
         [RedirectIfNotAuthenticated]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Delete(int id)
         {
             var course = _courseService.GetCourseById(id);
@@ -116,6 +122,7 @@ namespace AcademyWebsite.Controllers
         [HttpPost]
         [RedirectIfNotAuthenticated]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult DeleteConfirmed(int id)
         {
             _courseService.DeleteCourse(id);

@@ -42,7 +42,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddApplicationIdentity(this IServiceCollection services, IConfiguration config)
         {
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                    .AddRoles<IdentityRole>() // Add role management
+                    .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<AcademyWebsiteContext>();
             return services;
         }
