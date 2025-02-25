@@ -20,20 +20,19 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
+                        <li class="nav-item-layout">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item-layout">
                             <a class="nav-link" asp-area="" asp-controller="Course" asp-action="Index">Courses</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item-layout">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="AboutUs">About Us</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item-layout">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Chat">Chat</a>
                         </li>
                     </ul>
-                    <!-- Admin Section -->
                     @if (User.IsInRole("Admin"))
                     {
                         <div class="dropdown ms-3">
@@ -41,7 +40,6 @@
                         </div>
                     }
 
-                    <!-- Manager Section -->
                     @if (User.IsInRole("Manager"))
                     {
                         <div class="dropdown ms-3">
@@ -49,8 +47,8 @@
                                 Manager
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="managerDropdown">
-                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Course" asp-action="Index">Manage Courses</a></li>
-                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Course" asp-action="Create">New Course</a></li>
+                                <li class="nav-item-layout"><a class="dropdown-item" asp-area="Admin" asp-controller="Course" asp-action="Index">Manage Courses</a></li>
+                                <li class="nav-item-layout"><a class="dropdown-item" asp-area="Admin" asp-controller="Course" asp-action="Create">New Course</a></li>
                             </ul>
                         </div>
                     }
