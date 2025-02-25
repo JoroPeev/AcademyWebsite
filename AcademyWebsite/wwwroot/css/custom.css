@@ -11,10 +11,29 @@
     border-radius: 4px;
 }
 
-
-
 .dropdown-item {
     padding: 0.5rem 1rem;
 }
 
-   
+li.nav-item-layout {
+    border-radius: 1em;
+    background-color: #48C9B0;
+    margin-inline:0.5em;
+    padding-inline: 0.5em;
+}
+.nav-link {
+    color:white;
+}
+.navbar-brand {
+    color:black
+}
+li.nav-item-login {
+    color:white;
+    border-radius: 1em;
+    background-color: #48C9B0;
+    margin-inline: 0.5em;
+    padding-inline: 0.5em;
+}
+body > header > nav {
+    background-color: #F9E79F;
+}
