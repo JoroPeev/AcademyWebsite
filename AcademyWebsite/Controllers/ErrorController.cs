@@ -1,24 +1,41 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
+[Route("error")]
 public class ErrorController : Controller
 {
-    [Route("Error/404")]
+    [Route("400")]
+    public IActionResult BadRequestPage()
+    {
+        return View("~/Views/Error/BadRequest.cshtml");
+    }
+
+    [Route("401")]
+    public IActionResult UnauthorizedPage()
+    {
+        return View("~/Views/Error/Unauthorized.cshtml");
+    }
+
+    [Route("403")]
+    public IActionResult ForbiddenPage()
+    {
+        return View("~/Views/Error/Forbidden.cshtml");
+    }
+
+    [Route("404")]
     public IActionResult NotFoundPage()
     {
-        Response.StatusCode = 404;
-        return View("NotFound");
+        return View("~/Views/Error/NotFound.cshtml");
     }
 
-    [Route("Error/500")]
-    public IActionResult InternalServerError()
+    [Route("429")]
+    public IActionResult TooManyRequestsPage()
     {
-        Response.StatusCode = 500;
-        return View("InternalServerError");
+        return View("~/Views/Error/TooManyRequests.cshtml");
     }
 
-    [Route("Error/General")]
-    public IActionResult GeneralError()
+    [Route("500")]
+    public IActionResult ServerError()
     {
-        return View("General");
+        return View("~/Views/Error/ServerError.cshtml");
     }
 }
