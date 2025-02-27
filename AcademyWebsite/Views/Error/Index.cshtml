@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "Error";
+}
+
+<div class="error-container">
+    <h1>Oops! Something went wrong</h1>
+    <div class="error-content">
+        <p>We apologize for the inconvenience. An unexpected error has occurred.</p>
+        <p>Please try again later or contact the administrator if the problem persists.</p>
+        <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Return to Home Page</a>
+    </div>
+</div>
