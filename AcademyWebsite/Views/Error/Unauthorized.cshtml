@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "401 Unauthorized";
+}
+
+<div class="error-container">
+    <div class="error-code">401</div>
+    <h1>Unauthorized</h1>
+    <div class="error-message">
+        <p>You are not authorized to access this resource.</p>
+        <p>Please log in or contact the administrator if you believe you should have access.</p>
+    </div>
+    <div class="error-actions">
+        <a href="@Url.Action("Login", "Account", new { returnUrl = Context.Request.Path })" class="btn btn-primary">
+            <i class="icon-login"></i> Log In
+        </a>
+        <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">
+            <i class="icon-home"></i> Return Home
+        </a>
+    </div>
+</div>
