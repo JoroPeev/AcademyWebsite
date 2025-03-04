@@ -19,14 +19,19 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
-            .AddCookie()
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Identity/Account/Login";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+            })
             .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
             {
-                options.ClientId = config.GetSection("GoogleKeys:ClientId").Value;
-                options.ClientSecret = config.GetSection("GoogleKeys:ClientSecret").Value;
+                options.ClientId = config["GoogleKeys:ClientId"];
+                options.ClientSecret = config["GoogleKeys:ClientSecret"];
             });
+
 
             return services;
         }
