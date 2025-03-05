@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "403 Forbidden";
+}
+
+<div class="error-container">
+    <div class="error-code">403</div>
+    <h1>Forbidden</h1>
+    <div class="error-message">
+        <p>You don't have permission to access this resource.</p>
+        <p>If you believe this is a mistake, please contact your administrator.</p>
+    </div>
+    <div class="error-actions">
+        <a href="@Url.Action("Index", "Home")" class="btn btn-primary">
+            <i class="icon-home"></i> Return Home
+        </a>
+        <a href="javascript:history.back()" class="btn btn-secondary">
+            <i class="icon-arrow-left"></i> Go Back
+        </a>
+    </div>
+</div>
