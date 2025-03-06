@@ -37,3 +37,39 @@ li.nav-item-login {
 body > header > nav {
     background-color: #F9E79F;
 }
+
+
+.error-container {
+    text-align: center;
+    padding: 40px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+    .error-container h1 {
+        font-size: 36px;
+        margin-bottom: 20px;
+        color: #e74c3c;
+    }
+
+.error-content {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+    .error-content p {
+        font-size: 18px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+
+    .error-content a {
+        text-decoration: none;
+    }
+
+    .error-content .btn {
+        margin-top: 20px;
+        padding: 10px 20px;
+    }
