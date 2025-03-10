@@ -4,7 +4,6 @@ using AcademyWebsite.SignalR;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddApplicationDbContext(builder.Configuration);
 builder.Services.AddApplicationIdentity(builder.Configuration);
@@ -15,10 +14,11 @@ builder.Services.AddControllersWithViews(options =>
 
 var app = builder.Build();
 
+app.UseExceptionHandler("/error/500");
+app.UseStatusCodePagesWithReExecute("/error/{0}");
+
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/error/500");
-    app.UseStatusCodePagesWithReExecute("/error/{0}");
     app.UseHsts();
 }
 else
@@ -28,9 +28,7 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
