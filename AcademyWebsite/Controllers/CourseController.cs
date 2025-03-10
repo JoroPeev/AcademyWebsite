@@ -44,7 +44,6 @@ namespace AcademyWebsite.Controllers
 
 
         [HttpGet]
-        [RedirectIfNotAuthenticated]
         [Authorize(Roles = "Admin,Manager")]
         public IActionResult Add()
         {
@@ -54,7 +53,6 @@ namespace AcademyWebsite.Controllers
         }
 
         [HttpPost]
-        [RedirectIfNotAuthenticated]
         [Authorize(Roles = "Admin,Manager")]
         public IActionResult Add(Course course)
         {
@@ -70,7 +68,6 @@ namespace AcademyWebsite.Controllers
         }
 
         [HttpGet]
-        [RedirectIfNotAuthenticated]
         [Authorize(Roles = "Admin,Manager")]
         public IActionResult Edit(int id)
         {
@@ -87,7 +84,6 @@ namespace AcademyWebsite.Controllers
         }
 
         [HttpPost]
-        [RedirectIfNotAuthenticated]
         [Authorize(Roles = "Admin,Manager")]
         public IActionResult Edit(int id, Course updatedCourse)
         {
@@ -106,7 +102,6 @@ namespace AcademyWebsite.Controllers
         }
 
         [HttpGet]
-        [RedirectIfNotAuthenticated]
         [Authorize(Roles = "Admin,Manager")]
         public IActionResult Delete(int id)
         {
@@ -120,7 +115,6 @@ namespace AcademyWebsite.Controllers
         }
 
         [HttpPost]
-        [RedirectIfNotAuthenticated]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Manager")]
         public IActionResult DeleteConfirmed(int id)
@@ -129,7 +123,6 @@ namespace AcademyWebsite.Controllers
             return RedirectToAction("Index");
         }
         [HttpGet]
-        [RedirectIfNotAuthenticated]
         [Route("Course/Join/{courseId}")]
         public IActionResult Join(int courseId)
         {
@@ -147,7 +140,7 @@ namespace AcademyWebsite.Controllers
             };
             return View(joinViewModel);
         }
-        [RedirectIfNotAuthenticated]
+
         [HttpPost]
         public IActionResult Join(JoinChildViewModel viewModel)
         {
