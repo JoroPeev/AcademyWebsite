@@ -1,5 +1,5 @@
 using AcademyWebsite;
-using AcademyWebsite.Extensions;
+using AcademyWebsite.Seeders;
 using AcademyWebsite.SignalR;
 using Microsoft.AspNetCore.Identity;
 
