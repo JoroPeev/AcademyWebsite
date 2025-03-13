@@ -13,6 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
             services.AddScoped<ICourseService, CourseService>();
+            services.AddScoped<ICourseRepository, CourseRepository>();
 
             services.AddSignalR();
 
