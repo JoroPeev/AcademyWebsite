@@ -1,4 +1,5 @@
 using AcademyWebsite.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AcademyWebsite.Controllers
@@ -11,6 +12,7 @@ namespace AcademyWebsite.Controllers
         {
             return View();
         }
+        [Authorize]
         public IActionResult Chat()
         {
             return View();
