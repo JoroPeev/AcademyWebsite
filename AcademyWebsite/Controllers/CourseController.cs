@@ -47,7 +47,7 @@ namespace AcademyWebsite.Controllers
         [Authorize(Roles = "Admin,Manager")]
         public IActionResult Add()
         {
-            var subjects = new List<string> { "Math", "Science", "Language", "Art" };
+            var subjects = new List<string> { "Math", "Science", "Language", "Art", "Programming" };
             ViewBag.Subjects = new SelectList(subjects);
             return View();
         }
@@ -62,7 +62,7 @@ namespace AcademyWebsite.Controllers
                 return RedirectToAction("Index");
             }
 
-            var subjects = new List<string> { "Math", "Science", "Language", "Art" };
+            var subjects = new List<string> { "Math", "Science", "Language", "Art", "Programming" };
             ViewBag.Subjects = new SelectList(subjects);
             return View(course);
         }
@@ -77,7 +77,7 @@ namespace AcademyWebsite.Controllers
                 return NotFound();
             }
 
-            var subjects = new List<string> { "Math", "Science", "Language", "Art" };
+            var subjects = new List<string> { "Math", "Science", "Language", "Art", "Programming" };
             ViewBag.Subjects = new SelectList(subjects);
 
             return View(course);
