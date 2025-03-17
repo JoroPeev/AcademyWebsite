@@ -8,12 +8,39 @@
         <a asp-action="Add" class="btn btn-primary mb-3">Add New Course</a>
     }
 
-    <div class="row">
+    <!-- Filtering and Sorting Options -->
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search by name...">
+        </div>
+        <div class="col-md-3">
+            <select id="categoryFilter" class="form-control">
+                <option value="">All Categories</option>
+                <option value="Math">Math</option>
+                <option value="Science">Science</option>
+                <option value="Language">Language</option>
+                <option value="Art">Art</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select id="sortPrice" class="form-control">
+                <option value="">Sort by Price</option>
+                <option value="asc">Low to High</option>
+                <option value="desc">High to Low</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row" id="courseContainer">
         @if (Model != null && Model.Any())
         {
             foreach (var course in Model)
             {
-                <div class="col-md-4 mb-4">
+                <div class="col-md-4 mb-4 course-card"
+                     data-name="@course.Name.ToLower()"
+                     data-category="@course.Subject.ToLower()"
+                     data-price="@course.Price">
+
                     <div class="card">
                         <img src="@course.ImageUrl" alt="@course.Name" class="card-img-top" style="max-height: 200px; object-fit: cover;">
 
@@ -23,7 +50,8 @@
 
                         <div class="card-body">
                             <p><strong>Details:</strong> @course.Details</p>
-                            <p><strong>Price:</strong> @course.Price</p>
+                            <p><strong>Category:</strong> @course.Subject</p>
+                            <p><strong>Price:</strong> $@course.Price</p>
                             <p class="course-timer" id="timer-@course.Id" data-start="@course.StartDate" data-end="@course.EndDate"></p>
                         </div>
 
@@ -55,6 +83,7 @@
 </div>
 
 <script>
+    // Function to format countdown timers
     function formatTime(ms) {
         var d = Math.floor(ms / (1000 * 60 * 60 * 24));
         var h = Math.floor((ms % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -63,6 +92,7 @@
         return d + 'd ' + h + 'h ' + m + 'm ' + s + 's';
     }
 
+    // Function to update course timers
     function updateCourseTimers() {
         var courses = document.querySelectorAll('.course-timer');
         courses.forEach(function (course) {
@@ -78,15 +108,52 @@
                 course.style.color = 'green';
             } else if (timeToEnd > 0) {
                 course.innerHTML = 'Ongoing, ends in: ' + formatTime(timeToEnd);
-                course.style.color = 'orange'; 
+                course.style.color = 'orange';
             } else {
                 course.innerHTML = 'Course ended.';
-                course.style.color = 'red'; 
+                course.style.color = 'red';
             }
         });
     }
 
+    // Update timers every second
     setInterval(updateCourseTimers, 1000);
-
     updateCourseTimers();
+
+    // Filtering and sorting logic
+    document.getElementById('searchInput').addEventListener('input', filterCourses);
+    document.getElementById('categoryFilter').addEventListener('change', filterCourses);
+    document.getElementById('sortPrice').addEventListener('change', sortCourses);
+
+    function filterCourses() {
+        var searchText = document.getElementById('searchInput').value.toLowerCase();
+        var selectedCategory = document.getElementById('categoryFilter').value.toLowerCase();
+        var courses = document.querySelectorAll('.course-card');
+
+        courses.forEach(function (course) {
+            var name = course.getAttribute('data-name');
+            var category = course.getAttribute('data-category');
+
+            var matchesSearch = name.includes(searchText);
+            var matchesCategory = selectedCategory === "" || category === selectedCategory;
+
+            course.style.display = (matchesSearch && matchesCategory) ? "block" : "none";
+        });
+
+        sortCourses(); // Sort after filtering
+    }
+
+    function sortCourses() {
+        var sortValue = document.getElementById('sortPrice').value;
+        var container = document.getElementById('courseContainer');
+        var courses = Array.from(document.querySelectorAll('.course-card')).filter(course => course.style.display !== "none");
+
+        if (sortValue === "asc") {
+            courses.sort((a, b) => parseFloat(a.getAttribute('data-price')) - parseFloat(b.getAttribute('data-price')));
+        } else if (sortValue === "desc") {
+            courses.sort((a, b) => parseFloat(b.getAttribute('data-price')) - parseFloat(a.getAttribute('data-price')));
+        }
+
+        courses.forEach(course => container.appendChild(course));
+    }
 </script>
