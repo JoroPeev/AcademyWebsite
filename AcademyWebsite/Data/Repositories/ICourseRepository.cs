@@ -1,5 +1,4 @@
-﻿
-using AcademyWebsite.Models;
+﻿using AcademyWebsite.Models;
 
 public interface ICourseRepository
 {
